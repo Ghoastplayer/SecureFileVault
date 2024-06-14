@@ -4,7 +4,6 @@ import net.tim.UserManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class SettingsPanel extends JPanel {
     private final Frame frame;
@@ -60,7 +59,11 @@ public class SettingsPanel extends JPanel {
                 }
 
                 // If everything is correct, change the password
-                UserManager.changePassword(username, new String(newPasswordField.getPassword()));
+                try {
+                    UserManager.changePassword(username, new String(newPasswordField.getPassword()));
+                } catch (UserNotFoundExeption ex) {
+                    throw new RuntimeException(ex);
+                }
                 JOptionPane.showMessageDialog(null, "Password successfully changed.");
                 logout();
             }

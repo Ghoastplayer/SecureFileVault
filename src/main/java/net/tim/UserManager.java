@@ -1,5 +1,7 @@
 package net.tim;
 
+import net.tim.gui.UserNotFoundExeption;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,23 +42,19 @@ public class UserManager {
             throw new RuntimeException("Failed to delete the user");
         }
 
-        //TODO: Delete all files in the vault from the user
-
+        //Delete the user folder in the vault
         file = new File("src/main/resources/vault/" + username);
-        if (file.delete()) {
-            System.out.println("User vault deleted successfully");
-        } else {
+        if (!file.delete()) {
             System.out.println("Failed to delete the user vault");
             throw new RuntimeException("Failed to delete the user vault");
         }
     }
 
-    public static void changePassword(String username, String newPassword) {
+    public static void changePassword(String username, String newPassword) throws UserNotFoundExeption {
         User user = loadUserFromFile("src/main/resources/users/"+ username + ".txt");
         File file = new File("src/main/resources/users/"+ username + ".txt");
         if (user == null) {
-            System.out.println("User not found");
-            return;
+            throw new UserNotFoundExeption("User not found");
         }
         if (!file.delete()) {
             System.out.println("Failed to delete the user");
